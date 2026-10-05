@@ -1,0 +1,917 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DistraCode – Step by Step</title>
+  <style>
+    * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { 
+      margin: 0; 
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 25%, #0f3460 50%, #533483 75%, #2d1b69 100%);
+      background-attachment: fixed;
+      color: #ebe5e6; 
+      min-height: 100vh;
+    }
+    header { 
+      background: linear-gradient(90deg, rgba(20,20,40,0.9) 0%, rgba(53,30,130,0.9) 100%);
+      padding: 20px 16px;
+      text-align: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    }
+    header h1 { 
+      margin: 0; 
+      color: #00fff0;
+      font-size: 2.5em;
+      text-shadow: 0 0 20px rgba(0,255,240,0.5);
+    }
+    header p {
+      color: #38ebf8;
+      font-size: 1.1em;
+      margin: 5px 0 0 0;
+    }
+    main { 
+      padding: 30px 20px; 
+      max-width: 800px; 
+      margin: auto; 
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(30,20,60,0.8) 0%, rgba(40,30,80,0.8) 100%);
+      border: 2px solid rgba(0,255,240,0.3);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(0,255,240,0.15), 0 0 20px rgba(83,52,131,0.3);
+      display: none;
+      backdrop-filter: blur(10px);
+    }
+
+    .card.active { display: block; animation: slideIn 0.5s ease; }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h2 { color: #22d3ee; margin-top: 0; }
+
+ button {
+      padding: 12px 24px;
+      border: 2px solid #00fff0;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #00fff0 0%, #38ebf8 100%);
+      color: #0f3460;
+      font-weight: bold;
+      cursor: pointer;
+      margin-right: 8px;
+      margin-top: 10px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,255,240,0.3);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0,255,240,0.5);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 2px solid rgba(0,255,240,0.3);
+      margin: 8px 0 16px 0;
+      background: rgba(15,52,96,0.6);
+      color: #00fff0;
+      font-size: 1em;
+      transition: all 0.3s ease;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #00fff0;
+      box-shadow: 0 0 15px rgba(0,255,240,0.4);
+      background: rgba(15,52,96,0.8);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: rgba(0,255,240,0.5);
+    }
+
+    /* Programming Language Symbols in Corners */
+    body::before {
+      content: '🐍';
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      font-size: 3em;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 1;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    body::after {
+      content: '</>';
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      font-size: 2.5em;
+      opacity: 0.3;
+      color: #00fff0;
+      pointer-events: none;
+      z-index: 1;
+      font-weight: bold;
+      animation: float 8s ease-in-out infinite reverse;
+    }
+
+    main::before {
+      content: '☕';
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      font-size: 3em;
+      opacity: 0.3;
+      pointer-events: none;
+      z-index: 1;
+      animation: float 7s ease-in-out infinite;
+    }
+
+    main::after {
+      content: '++';
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      font-size: 3em;
+      opacity: 0.3;
+      color: #00fff0;
+      pointer-events: none;
+      z-index: 1;
+      font-weight: bold;
+      animation: float 9s ease-in-out infinite reverse;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+
+    /* PC Opening Animation */
+    .pc-opening-animation {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px;
+      height: 450px;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .pc-screen {
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, #00fff0, #38ebf8);
+      border-radius: 30px;
+      box-shadow: 0 0 80px rgba(0,255,240,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6em;
+      animation: pcOpen 3s ease-out forwards;
+      border: 8px solid #00fff0;
+      opacity: 0.2;
+    }
+
+    .pc-screen::before {
+      content: '💻';
+      animation: screenPulse 3s ease-out forwards;
+    }
+
+    @keyframes pcOpen {
+      0% {
+        transform: scaleY(0) rotateX(90deg);
+        opacity: 0;
+      }
+      50% {
+        transform: scaleY(1) rotateX(0deg);
+        opacity: 0.3;
+      }
+      100% {
+        transform: scaleY(1) rotateX(0deg) scale(1);
+        opacity: 0.2;
+      }
+    }
+
+    @keyframes screenPulse {
+      0% {
+        transform: scale(0.5);
+        opacity: 0;
+      }
+      50% {
+        transform: scale(1.2);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.3;
+      }
+    }
+
+    /* Lock Unlock Animation */
+    .lock-unlock-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 300px;
+      z-index: 1000;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lock-icon {
+      font-size: 10em;
+      animation: lockUnlock 2.5s ease-in-out forwards;
+    }
+
+    @keyframes lockUnlock {
+      0% {
+        content: '🔒';
+        transform: scale(1) rotateZ(0deg);
+        opacity: 1;
+        color: #ff4444;
+      }
+      40% {
+        transform: scale(1.2) rotateZ(-10deg);
+      }
+      60% {
+        transform: scale(1.2) rotateZ(10deg);
+      }
+      80% {
+        color: #ffaa00;
+      }
+      100% {
+        content: '🔓';
+        transform: scale(1) rotateZ(0deg) rotateY(360deg);
+        opacity: 1;
+        color: #00ff44;
+      }
+    }
+
+    .unlock-text {
+      position: absolute;
+      bottom: 20px;
+      font-size: 1.5em;
+      color: #00ff44;
+      font-weight: bold;
+      animation: fadeInText 2.5s ease-out forwards;
+    }
+
+    @keyframes fadeInText {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      60% {
+        opacity: 0;
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Unlocked Apps Grid */
+    .unlocked-apps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 15px;
+      padding: 10px;
+    }
+
+    .app-button {
+      padding: 20px;
+      background: linear-gradient(135deg, rgba(0,255,240,0.2), rgba(56,235,248,0.2));
+      border: 2px solid #00fff0;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 2em;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: #00fff0;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .app-button:hover {
+      background: linear-gradient(135deg, rgba(0,255,240,0.4), rgba(56,235,248,0.4));
+      box-shadow: 0 0 20px rgba(0,255,240,0.5);
+      transform: translateY(-5px);
+    }
+
+    .app-button:active {
+      transform: translateY(0);
+    }
+
+    .app-button.opened {
+      animation: appOpen 0.6s ease-out;
+    }
+
+    @keyframes appOpen {
+      0% {
+        transform: scale(1);
+        box-shadow: 0 0 10px rgba(0,255,240,0.3);
+      }
+      50% {
+        transform: scale(1.1);
+        box-shadow: 0 0 30px rgba(0,255,240,0.8);
+      }
+      100% {
+        transform: scale(1);
+        box-shadow: 0 0 20px rgba(0,255,240,0.5);
+      }
+    }
+
+    .app-access-notification {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: linear-gradient(135deg, #00fff0, #38ebf8);
+      color: #0f3460;
+      padding: 30px 50px;
+      border-radius: 15px;
+      font-size: 1.5em;
+      font-weight: bold;
+      z-index: 1001;
+      animation: showNotification 1s ease-out;
+      box-shadow: 0 0 50px rgba(0,255,240,0.8);
+    }
+
+    @keyframes showNotification {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.5);
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    .apps span {
+      display: inline-block;
+      background: #1e3b37;
+      padding: 8px 12px;
+      border-radius: 20px;
+      margin: 6px;
+    }
+
+    .progress {
+      background: #1e293b;
+      border-radius: 10px;
+      overflow: hidden;
+      height: 18px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: #22d3ee;
+      width: 0%;
+    }
+
+    .permissions-list {
+      background: #1e293b;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
+    }
+
+    .permission-item {
+      padding: 8px 0;
+      color: #22d3ee;
+    }
+
+    select[multiple] {
+      height: 100px;
+      padding: 8px;
+      background: #1e293b;
+      color: #22d3ee;
+      border: 2px solid #38ebf8;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    select[multiple] option {
+      padding: 6px;
+      background: #0f172a;
+      color: #22d3ee;
+      margin: 2px 0;
+    }
+
+    select[multiple] option:checked {
+      background: #6e38f8;
+      color: #020617;
+    }
+
+    .apps-checkbox-container {
+      background: #1e293b;
+      border: 2px solid #38ebf8;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 12px 0;
+      max-height: 300px;
+      overflow-y: auto;
+    }
+
+    .app-checkbox-item {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      margin: 6px 0;
+      background: #0f172a;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .app-checkbox-item:hover {
+      background: #1e293b;
+      transform: translateX(5px);
+    }
+
+    .app-checkbox-item input[type="checkbox"] {
+      width: auto;
+      margin: 0 12px 0 0;
+      cursor: pointer;
+      scale: 1.2;
+    }
+
+    .app-checkbox-item label {
+      flex: 1;
+      cursor: pointer;
+      color: #22d3ee;
+      margin: 0;
+    }
+
+    .app-checkbox-item input[type="checkbox"]:checked + label {
+      color: #6e38f8;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>DistraCode</h1>
+    <p>Focus • Code • Unlock</p>
+  </header>
+
+  <main>
+    <!-- STEP 1 -->
+    <div class="card active" id="step1">
+      <h2>Step 1: Choose Programming Language you want to study</h2>
+      <select id="language">
+        <option value="">-- Select Language --</option>
+        <option>Python</option>
+        <option>Java</option>
+        <option>C++</option>
+        <option>JavaScript</option>
+      </select>
+      <button onclick="nextStep(1)">Next</button>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="card" id="step2">
+      <h2>Step 2: Select Distracting Apps which distract you while you decide to study</h2>
+      <p>Click on apps to select them (checkboxes will show):</p>
+      <div class="apps-checkbox-container" id="appCheckboxContainer">
+        <!-- Checkboxes will be generated by JavaScript -->
+      </div>
+      <h3 style="color: #22d3ee; margin-top: 20px;">Selected Apps:</h3>
+      <div class="apps" id="appsList"></div>
+      <br />
+      <button onclick="nextStep(2)">Next</button>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="card" id="step3">
+      <h2>Step 3: Grant Android Permissions</h2>
+      <p>Select the permissions you want to grant:</p>
+      <select id="permissionSelect" multiple>
+        <option value="android.permission.QUERY_ALL_PACKAGES" selected>✓ Query All Packages - Access your installed apps</option>
+        <option value="android.permission.PACKAGE_USAGE_STATS" selected>✓ Package Usage Stats - Monitor app usage</option>
+        <option value="android.permission.SYSTEM_ALERT_WINDOW" selected>✓ System Alert Window - Display lock notifications</option>
+      </select>
+      <div class="permissions-list">
+        <div class="permission-item">📋 Query All Packages - Access your installed apps</div>
+        <div class="permission-item">📊 Package Usage Stats - Monitor app usage</div>
+        <div class="permission-item">⚠️ System Alert Window - Display lock notifications</div>
+      </div>
+      <button onclick="requestAndroidPermissions()">Grant Selected Permissions</button>
+      <button onclick="nextStep(3)" style="background: #22d3ee;">Skip for Now</button>
+    </div>
+
+    <!-- STEP 4 -->
+    <div class="card" id="step4">
+      <h2>Step 4: Daily Coding Challenge</h2>
+      <p id="challengeText"></p>
+      <textarea id="codeBox" rows="6" placeholder="Write your code here..."></textarea>
+      <button onclick="submitChallenge()">Submit Challenge</button>
+    </div>
+
+    <!-- STEP 5 -->
+    <div class="card" id="step5">
+      <h2>Step 5: Test Case Output</h2>
+      <p style="color: #38ebf8; margin-bottom: 20px;">✓ Your challenge test case execution:</p>
+      
+      <div style="background: rgba(15,52,96,0.8); border: 3px solid #00fff0; border-radius: 12px; padding: 20px; margin: 15px 0;">
+        <div style="font-family: 'Courier New', monospace; color: #22d3ee; font-size: 0.95em; line-height: 2;">
+          <p style="color: #00ff44; margin: 8px 0;"><strong>═══ TEST CASE RESULTS ═══</strong></p>
+          <p style="margin: 8px 0;"><strong>Language:</strong> <span id="testLanguage" style="color: #00ff44;">Python</span></p>
+          <p style="margin: 8px 0;"><strong>Challenge:</strong> <span id="testChallenge" style="color: #00ff44;">--</span></p>
+          <p style="margin: 8px 0;"><strong>Locked Apps:</strong> <span id="testApps" style="color: #00ff44;">--</span></p>
+          <p style="margin: 8px 0;"><strong>Code Submitted:</strong></p>
+          <div style="background: rgba(0,0,0,0.5); border-left: 3px solid #38ebf8; padding: 10px; margin: 8px 0; border-radius: 4px;">
+            <pre id="submittedCode" style="margin: 0; color: #38ebf8; white-space: pre-wrap; word-wrap: break-word;">-- No code submitted --</pre>
+          </div>
+          <p style="margin: 8px 0;"><strong>Output:</strong></p>
+          <div style="background: rgba(0,0,0,0.5); border-left: 3px solid #00ff44; padding: 10px; margin: 8px 0; border-radius: 4px; min-height: 40px;">
+            <pre id="programOutput" style="margin: 0; color: #00ff44; white-space: pre-wrap; word-wrap: break-word;">-- Waiting for output --</pre>
+          </div>
+          <p style="margin: 8px 0;"><strong>Status:</strong> <span style="color: #00ff44;"><strong>✓ PASSED</strong></span></p>
+          <p style="color: #00ff44; margin: 8px 0;"><strong>═════════════════════════</strong></p>
+        </div>
+      </div>
+
+      <button onclick="nextStep(5)">View Congratulations</button>
+    </div>
+
+    <!-- STEP 6 -->
+    <div class="card" id="step6">
+      <h2>🎉 Congratulations!</h2>
+      <div style="text-align: center; margin: 30px 0;">
+        <p style="font-size: 1.3em; color: #00fff0; font-weight: bold;">You completed the task of Day -1</p>
+        <p style="font-size: 1.1em; color: #38ebf8; margin-top: 20px;">Wait for the excited segment of our App.</p>
+
+        <div class="progress" style="margin-top: 30px;">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <p style="margin-top: 15px;"><span id="dayCount" style="color: #00fff0; font-size: 1.2em;">Day 0</span> <span style="color: #38ebf8;">/ 100 completed</span></p>
+        <button onclick="showUnlockAnimationAndApps()" style="margin-top: 20px;">🔓 Unlock My Apps</button>
+      </div>
+      <div id="unlockAnimationContainer"></div>
+    </div>
+
+    <!-- STEP 7 - Access Unlocked Apps -->
+    <div class="card" id="step7">
+      <h2>✨ You Now Have Access to Your Apps</h2>
+      <p style="color: #38ebf8; font-size: 1.1em; margin-bottom: 20px;">Click on any app below to open it. You've earned this break!</p>
+      <div style="background: rgba(0,255,240,0.05); border: 2px solid rgba(0,255,240,0.2); border-radius: 12px; padding: 20px;">
+        <div class="unlocked-apps-grid" id="unlockedAppsGrid"></div>
+      </div>
+      <div style="text-align: center; margin-top: 20px;">
+        <button onclick="resetForNewDay()">Start New Day Challenge</button>
+        <button onclick="goToStep(6)" style="background: #38ebf8;">Back to Congratulations</button>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    let currentStep = 1;
+    let apps = [];
+    let day = 0;
+    const appsList = ['Instagram', 'Facebook', 'WhatsApp', 'Twitter', 'YouTube', 'Clash of clans', 'Call of duty', 'Snapchat', 'Freefire', 'BGMI'];
+
+    const challenges = {
+      Python: "Print numbers from 1 to 10",
+      Java: "Check whether a number is even or odd.",
+      "C++": "Find the sum of two numbers.",
+      JavaScript: "Return the square of number."
+
+    };
+
+    // Initialize app checkboxes
+    function initializeAppCheckboxes() {
+      const container = document.getElementById('appCheckboxContainer');
+      container.innerHTML = '';
+      
+      appsList.forEach(appName => {
+        const isChecked = apps.includes(appName);
+        const item = document.createElement('div');
+        item.className = 'app-checkbox-item';
+        item.innerHTML = `
+          <input type="checkbox" id="app_${appName}" ${isChecked ? 'checked' : ''} onchange="toggleApp('${appName}')">
+          <label for="app_${appName}">${appName}</label>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function toggleApp(appName) {
+      const index = apps.indexOf(appName);
+      if (index > -1) {
+        apps.splice(index, 1);
+      } else {
+        apps.push(appName);
+      }
+      renderApps();
+    }
+
+    function nextStep(step) {
+      if (step === 1) {
+        const lang = document.getElementById('language').value;
+        if (!lang) {
+          alert('Please select a language');
+          return;
+        }
+        document.getElementById('challengeText').textContent = challenges[lang];
+      }
+
+      if (step === 2 && apps.length === 0) {
+        alert('Please select at least one app');
+        return;
+      }
+
+      document.getElementById(`step${step}`).classList.remove('active');
+      document.getElementById(`step${step + 1}`).classList.add('active');
+      
+      if (step === 1) {
+        initializeAppCheckboxes();
+      }
+    }
+
+    function renderApps() {
+      const list = document.getElementById('appsList');
+      list.innerHTML = "";
+      apps.forEach(app => {
+        const span = document.createElement('span');
+        span.textContent = app + " 🔒";
+        list.appendChild(span);
+      });
+    }
+
+    function requestAndroidPermissions() {
+      // Check if running on Android/Cordova
+      if (typeof cordova !== 'undefined') {
+        const permissions = [
+          'android.permission.QUERY_ALL_PACKAGES',
+          'android.permission.PACKAGE_USAGE_STATS',
+          'android.permission.SYSTEM_ALERT_WINDOW'
+        ];
+        
+        cordova.plugins.permissions.requestPermissions(
+          permissions,
+          function() {
+            alert('Permissions granted! ✓');
+            nextStep(3);
+          },
+          function() {
+            alert('Permissions denied. You can still proceed.');
+            nextStep(3);
+          }
+        );
+      } else {
+        alert('Android permissions system not available. Proceeding...');
+        nextStep(3);
+      }
+    }
+
+    function submitChallenge() {
+      day++;
+      document.getElementById('dayCount').textContent = `Day ${day}`;
+      document.getElementById('progressBar').style.width = day + '%';
+
+      // Get code and language
+      const selectedLang = document.getElementById('language').value;
+      const codeSubmitted = document.getElementById('codeBox').value;
+      
+      // Update test case output
+      document.getElementById('testLanguage').textContent = selectedLang || 'Python';
+      document.getElementById('testChallenge').textContent = challenges[selectedLang] || 'Write your code';
+      document.getElementById('testApps').textContent = apps.length > 0 ? apps.join(', ') : 'No apps locked';
+      document.getElementById('submittedCode').textContent = codeSubmitted || '// No code submitted';
+      
+      // Execute code and get output
+      const output = executeCode(selectedLang, codeSubmitted);
+      document.getElementById('programOutput').textContent = output;
+
+      document.getElementById('step4').classList.remove('active');
+      document.getElementById('step5').classList.add('active');
+
+      alert('Challenge completed! Moving to test results...');
+    }
+
+
+    
+
+    function executeCode(language, code) {
+      if (!code.trim()) {
+        return '// No output - code is empty';
+      }
+
+      try {
+        if (language === 'JavaScript') {
+          // For JavaScript, we can execute directly
+          let output = '';
+          const originalLog = console.log;
+          console.log = function(...args) {
+            output += args.join(' ') + '\n';
+          };
+          eval(code);
+          console.log = originalLog;
+          return output || 'Code executed successfully (no console output)';
+        } else if (language === 'Python') {
+          // Simulate Python output
+          if (code.includes('for') || code.includes('range')) {
+            return '1\n2\n3\n4\n5\n6\n7\n8\n9\n10';
+          } else if (code.includes('print')) {
+            return 'Python output: ' + code.match(/print\((.*?)\)/)?.[1] || 'Executed';
+          }
+          return 'Code executed successfully';
+        } else if (language === 'Java') {
+          // Simulate Java output
+          if (code.includes('even') || code.includes('odd')) {
+            return 'Checking number: 5\nThe number is odd';
+          }
+          return 'Java program executed successfully';
+        } else if (language === 'C++') {
+          // Simulate C++ output
+          if (code.includes('+')) {
+            return 'Sum: 15';
+          }
+          return 'C++ program executed successfully';
+        }
+        return 'Code executed successfully';
+      } catch (e) {
+        return '❌ Error: ' + e.message;
+      }
+    }
+
+    function playSound(frequency, duration, type = 'sine') {
+      const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      const oscillator = audioContext.createOscillator();
+      const gainNode = audioContext.createGain();
+      
+      oscillator.connect(gainNode);
+      gainNode.connect(audioContext.destination);
+      
+      oscillator.frequency.value = frequency;
+      oscillator.type = type;
+      
+      gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+      
+      oscillator.start(audioContext.currentTime);
+      oscillator.stop(audioContext.currentTime + duration);
+    }
+
+    function playUnlockSequence() {
+      // Initial lock sound - beep beep
+      setTimeout(() => playSound(400, 0.1), 0);
+      setTimeout(() => playSound(400, 0.1), 150);
+      
+      // Mid-unlock sounds - descending tones
+      setTimeout(() => playSound(600, 0.15), 600);
+      setTimeout(() => playSound(500, 0.15), 900);
+      
+      
+    }
+
+    function showUnlockAnimation() {
+      const container = document.getElementById('unlockAnimationContainer');
+      container.innerHTML = `
+        <div class="lock-unlock-container">
+          <div class="lock-icon">🔒</div>
+          <div class="unlock-text">Unlocking access...</div>
+        </div>
+      `;
+      
+      // Play unlock sound sequence
+      playUnlockSequence();
+      
+      // Remove animation after completion
+      setTimeout(() => {
+        container.innerHTML = `
+          <div class="lock-unlock-container">
+            <div style="text-align: center; font-size: 1.3em; color: #00ff44;">
+              <div style="font-size: 5em; margin-bottom: 10px;">🔓</div>
+              <div>All apps unlocked!</div>
+              <div style="font-size: 0.9em; margin-top: 10px;">You can now access your apps.</div>
+            </div>
+          </div>
+        `;
+      }, 2500);
+    }
+
+    function showUnlockAnimationAndApps() {
+      const container = document.getElementById('unlockAnimationContainer');
+      container.innerHTML = `
+        <div class="lock-unlock-container">
+          <div class="lock-icon">🔒</div>
+          <div class="unlock-text">Unlocking access...</div>
+        </div>
+      `;
+      
+      // Play unlock sound sequence
+      playUnlockSequence();
+      
+      // Remove animation and go to apps after completion
+      setTimeout(() => {
+        container.innerHTML = `
+          <div class="lock-unlock-container">
+            <div style="text-align: center; font-size: 1.3em; color: #00ff44;">
+              <div style="font-size: 5em; margin-bottom: 10px;">🔓</div>
+              <div>All apps unlocked!</div>
+              <div style="font-size: 0.9em; margin-top: 10px;">You can now access your apps.</div>
+            </div>
+          </div>
+        `;
+        
+        // Populate and show apps after 1 second
+        setTimeout(() => {
+          populateUnlockedApps();
+          nextStep(6);
+        }, 1000);
+      }, 2500);
+    }
+
+    function populateUnlockedApps() {
+      const grid = document.getElementById('unlockedAppsGrid');
+      grid.innerHTML = '';
+      
+      const appEmojis = {
+        'Instagram': '📷',
+        'Facebook': '👥',
+        'TikTok': '🎵',
+        'Twitter': '🐦',
+        'YouTube': '🎬',
+        'Reddit': '🤖',
+        'Discord': '💬',
+        'Snapchat': '👻',
+        'Freefire': '🔥',
+        'BGMI': '🎮'
+      };
+
+      apps.forEach(appName => {
+        const button = document.createElement('button');
+        button.className = 'app-button';
+        button.innerHTML = `
+          <div>${appEmojis[appName] || '📱'}</div>
+          <div style="font-size: 0.6em;">${appName}</div>
+        `;
+        button.onclick = () => openApp(appName, button);
+        grid.appendChild(button);
+      });
+    }
+
+    function openApp(appName, buttonElement) {
+      // Add opening animation
+      buttonElement.classList.add('opened');
+      playSound(1200, 0.1);
+      
+      // Show notification
+      const notification = document.createElement('div');
+      notification.className = 'app-access-notification';
+      notification.textContent = `✓ ${appName} Opened! You are now being redirected to this app.`;
+      document.body.appendChild(notification);
+      
+      // Remove notification after animation
+      setTimeout(() => {
+        notification.remove();
+      }, 1500);
+    }
+
+    function resetForNewDay() {
+      apps = [];
+      currentStep = 0;
+      document.getElementById('step7').classList.remove('active');
+      document.getElementById('step1').classList.add('active');
+      document.getElementById('language').value = '';
+      document.getElementById('codeBox').value = '';
+      document.getElementById('appCheckboxContainer').innerHTML = '';
+      alert('New day started! Let\'s go again! 💪');
+    }
+
+    function goToStep(step) {
+      document.getElementById(`step${currentStep + 1}`).classList.remove('active');
+      document.getElementById(`step${step}`).classList.add('active');
+      currentStep = step - 1;
+    }
+  </script>
+</body>
+</html>
